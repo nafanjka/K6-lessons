@@ -7,6 +7,7 @@ const baseUrl = __ENV.BASE_URL || 'http://localhost:8000';
 const virtualUsers = Number(__ENV.VUS || 5);
 const durationSeconds = resolveDurationSeconds(__ENV.DURATION || '1m');
 const rampSeconds = Math.max(1, Math.round(durationSeconds / 10));
+const cloudProjectId = Number(__ENV.CLOUD_PROJECT_ID || 6019612);
 
 export const options = {
     stages: [
@@ -15,7 +16,7 @@ export const options = {
         { duration: `${rampSeconds}s`, target: 0 }
     ],
     cloud: {
-        projectID: 6019612,
+        projectID: cloudProjectId,
     },
     thresholds: {
         http_req_duration: ['p(90)<1200', 'p(95)<1500'],
