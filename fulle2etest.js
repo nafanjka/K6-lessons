@@ -55,14 +55,9 @@ export default function () {
         { headers: jsonHeaders, tags: { name: registerStep } }
     );
 
-    let registerBody = {};
-    if (res.status === 201) {
-        registerBody = res.json();
-    }
-
     check(res, {
         [`${registerStep} | status 201`]: (r) => r.status === 201,
-        [`${registerStep} | username matches`]: () => registerBody.username === userCredentials.username
+        [`${registerStep} | username matches`]: (r) => r.json().username === userCredentials.username
     });
 
     sleep(randomIntBetween(0, 5));
@@ -101,14 +96,9 @@ export default function () {
         { headers: authHeaders, tags: { name: listStep } }
     );
 
-    let listBody = [];
-    if (res.status === 200) {
-        listBody = res.json();
-    }
-
     check(res, {
         [`${listStep} | status 200`]: (r) => r.status === 200,
-        [`${listStep} | empty list`]: () => Array.isArray(listBody) && listBody.length === 0
+        [`${listStep} | empty list`]: (r) => r.json().length === 0
     });
 
     sleep(randomIntBetween(0, 5));
@@ -121,14 +111,9 @@ export default function () {
         { headers: authJsonHeaders, tags: { name: createStep } }
     );
 
-    let newCrocodileId = null;
-    if (res.status === 201) {
-        newCrocodileId = res.json().id;
-    }
-
     check(res, {
         [`${createStep} | status 201`]: (r) => r.status === 201,
-        [`${createStep} | id issued`]: () => newCrocodileId !== null
+        [`${createStep} | id issued`]: (r) => r.json().id !== null
     });
 
     if (newCrocodileId === null) {
@@ -144,14 +129,9 @@ export default function () {
         { headers: authHeaders, tags: { name: detailStep } }
     );
 
-    let detailBody = {};
-    if (res.status === 200) {
-        detailBody = res.json();
-    }
-
     check(res, {
         [`${detailStep} | status 200`]: (r) => r.status === 200,
-        [`${detailStep} | correct id`]: () => detailBody.id === newCrocodileId
+        [`${detailStep} | correct id`]: (r) => r.json().id === newCrocodileId
     });
 
     sleep(randomIntBetween(0, 5));
@@ -164,14 +144,9 @@ export default function () {
         { headers: authJsonHeaders, tags: { name: putStep } }
     );
 
-    let putBody = {};
-    if (res.status === 200) {
-        putBody = res.json();
-    }
-
     check(res, {
         [`${putStep} | status 200`]: (r) => r.status === 200,
-        [`${putStep} | name updated`]: () => putBody.name === 'Anzhella'
+        [`${putStep} | name updated`]: (r) => r.json().name === 'Anzhella'
     });
 
     sleep(randomIntBetween(0, 5));
@@ -184,14 +159,9 @@ export default function () {
         { headers: authJsonHeaders, tags: { name: patchStep } }
     );
 
-    let patchBody = {};
-    if (res.status === 200) {
-        patchBody = res.json();
-    }
-
     check(res, {
         [`${patchStep} | status 200`]: (r) => r.status === 200,
-        [`${patchStep} | gender updated`]: () => patchBody.sex === 'F'
+        [`${patchStep} | gender updated`]: (r) => r.json().sex === 'F'
     });
 
     sleep(randomIntBetween(0, 5));
